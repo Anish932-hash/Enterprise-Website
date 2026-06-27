@@ -35,7 +35,8 @@ import {
   CheckCircle2,
   Clock,
   MapPin,
-  ChevronRight
+  ChevronRight,
+  Download
 } from "lucide-react";
 import Link from "next/link";
 
@@ -442,7 +443,13 @@ export default function AdminDashboard() {
                           })}
                         </div>
                         
-                        <div className="flex justify-end pt-2 border-t border-slate-100">
+                        <div className="flex justify-between items-center pt-2 border-t border-slate-100">
+                          <button 
+                            onClick={() => alert(`Invoice for ${order.id} downloaded successfully.`)}
+                            className="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-800 transition-colors"
+                          >
+                            <Download className="w-4 h-4" /> Download Invoice
+                          </button>
                           <button className="flex items-center gap-2 text-sm font-semibold text-teal-600 hover:text-teal-700 transition-colors">
                             Manage Order <ChevronRight className="w-4 h-4" />
                           </button>
