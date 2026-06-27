@@ -29,6 +29,7 @@ export default function Header() {
             <Link href="/" className="hover:text-teal-600 transition-colors">Home</Link>
             <Link href="/products" className="hover:text-teal-600 transition-colors">Products</Link>
             <Link href="/bulk" className="hover:text-teal-600 transition-colors">Bulk Orders</Link>
+            <Link href="/tracking" className="hover:text-teal-600 transition-colors">Track Order</Link>
             <Link href="/about" className="hover:text-teal-600 transition-colors">About</Link>
           </div>
         </div>
@@ -92,6 +93,7 @@ export default function Header() {
               <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="py-3 border-b border-slate-50 hover:text-teal-600 transition-colors">Home</Link>
               <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="py-3 border-b border-slate-50 hover:text-teal-600 transition-colors">Products</Link>
               <Link href="/bulk" onClick={() => setIsMobileMenuOpen(false)} className="py-3 border-b border-slate-50 hover:text-teal-600 transition-colors">Bulk Orders</Link>
+              <Link href="/tracking" onClick={() => setIsMobileMenuOpen(false)} className="py-3 border-b border-slate-50 hover:text-teal-600 transition-colors">Track Order</Link>
               <Link href="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="py-3 border-b border-slate-50 hover:text-teal-600 transition-colors flex items-center justify-between">
                 Wishlist
                 {wishlistCount > 0 && <span className="bg-red-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">{wishlistCount}</span>}

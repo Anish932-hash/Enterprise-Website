@@ -13,6 +13,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="flex items-center gap-4 text-xs font-medium text-slate-400">
+          <a href="/tracking" className="hover:text-teal-600 transition-colors">Track Order</a>
           <span>Terms</span>
           <span>Privacy</span>
           <span className="text-slate-300">|</span>
