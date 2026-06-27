@@ -81,6 +81,38 @@ const recentOrders = [
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [ordersList, setOrdersList] = useState(recentOrders);
+  const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+  const [bulkAction, setBulkAction] = useState("");
+
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSelectedOrders(ordersList.map(o => o.id));
+    } else {
+      setSelectedOrders([]);
+    }
+  };
+
+  const handleSelectOrder = (id: string, checked: boolean) => {
+    if (checked) {
+      setSelectedOrders(prev => [...prev, id]);
+    } else {
+      setSelectedOrders(prev => prev.filter(orderId => orderId !== id));
+    }
+  };
+
+  const handleBulkAction = () => {
+    if (!bulkAction || selectedOrders.length === 0) return;
+    
+    setOrdersList(prev => prev.map(order => {
+      if (selectedOrders.includes(order.id)) {
+        return { ...order, status: parseInt(bulkAction) };
+      }
+      return order;
+    }));
+    setSelectedOrders([]);
+    setBulkAction("");
+  };
 
   const NavItem = ({ icon: Icon, label, id, badge }: any) => (
     <button 
@@ -354,14 +386,48 @@ export default function AdminDashboard() {
                       <h2 className="text-xl font-bold text-slate-800">Orders Management</h2>
                       <p className="text-sm text-slate-500 mt-1">View and manage customer orders and tracking status.</p>
                     </div>
-                    <button className="px-6 py-2 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-700 transition-colors">Export Orders</button>
+                    <div className="flex gap-3">
+                      {selectedOrders.length > 0 && (
+                        <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
+                          <select 
+                            value={bulkAction} 
+                            onChange={(e) => setBulkAction(e.target.value)}
+                            className="bg-white border border-slate-200 text-sm rounded-lg px-3 py-1.5 outline-none text-slate-700 font-medium h-full"
+                          >
+                            <option value="">Bulk Action</option>
+                            <option value="0">Mark Placed</option>
+                            <option value="1">Mark Processing</option>
+                            <option value="2">Mark Shipped</option>
+                            <option value="3">Mark Out for Delivery</option>
+                            <option value="4">Mark Delivered</option>
+                          </select>
+                          <button onClick={handleBulkAction} className="px-3 py-1.5 bg-slate-800 text-white text-sm font-semibold rounded-lg hover:bg-slate-700 transition-colors">Apply</button>
+                        </div>
+                      )}
+                      <button className="px-6 py-2 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-700 transition-colors">Export Orders</button>
+                    </div>
                   </div>
                   
                   <div className="flex flex-col gap-4">
-                    {recentOrders.map((order) => (
-                      <div key={order.id} className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col gap-6 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center px-6 py-2">
+                      <input 
+                        type="checkbox" 
+                        checked={selectedOrders.length === ordersList.length && ordersList.length > 0} 
+                        onChange={handleSelectAll}
+                        className="w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500 mr-4 cursor-pointer"
+                      />
+                      <span className="text-sm font-semibold text-slate-600">Select All ({selectedOrders.length} selected)</span>
+                    </div>
+                    {ordersList.map((order) => (
+                      <div key={order.id} className={`bg-white rounded-2xl border ${selectedOrders.includes(order.id) ? 'border-teal-400 shadow-md ring-1 ring-teal-400' : 'border-slate-200 shadow-sm'} p-6 flex flex-col gap-6 hover:shadow-md transition-all`}>
                         <div className="flex flex-wrap gap-4 items-center justify-between border-b border-slate-100 pb-4">
                           <div className="flex items-center gap-4">
+                            <input 
+                              type="checkbox" 
+                              checked={selectedOrders.includes(order.id)}
+                              onChange={(e) => handleSelectOrder(order.id, e.target.checked)}
+                              className="w-5 h-5 rounded border-slate-300 text-teal-600 focus:ring-teal-500 cursor-pointer"
+                            />
                             <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100">
                               <ShoppingBag className="w-6 h-6 text-slate-400" />
                             </div>

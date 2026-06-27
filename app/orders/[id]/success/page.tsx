@@ -1,7 +1,33 @@
+"use client";
+
 import Link from "next/link";
-import { CheckCircle, Package } from "lucide-react";
+import { CheckCircle, Package, Download } from "lucide-react";
+import { jsPDF } from "jspdf";
 
 export default function OrderSuccessPage({ params }: { params: { id: string } }) {
+  const handleDownloadInvoice = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(22);
+    doc.text("Invoice", 20, 20);
+    doc.setFontSize(12);
+    doc.text(`Order ID: ${params.id}`, 20, 30);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 40);
+    
+    doc.text("Item", 20, 70);
+    doc.text("Amount", 150, 70);
+    doc.line(20, 72, 190, 72);
+    
+    doc.text("PureClean 5L Multi-Surface", 20, 80);
+    doc.text("Rs. 1,250", 150, 80);
+    
+    doc.line(20, 90, 190, 90);
+    doc.setFontSize(14);
+    doc.text("Total:", 120, 100);
+    doc.text("Rs. 1,250", 150, 100);
+
+    doc.save(`Invoice_${params.id}.pdf`);
+  };
+
   return (
     <div className="min-h-[70vh] flex items-center justify-center bg-gray-50 px-4">
       <div className="bg-white p-10 rounded-2xl shadow-sm border border-gray-100 text-center max-w-lg w-full">
@@ -20,8 +46,15 @@ export default function OrderSuccessPage({ params }: { params: { id: string } })
         </div>
 
         <div className="space-y-3">
-          <Link href={`/orders/${params.id}`} className="block w-full bg-blue-600 text-white font-medium py-3 rounded-lg hover:bg-blue-700 transition">
-            View Order Details
+          <button 
+            onClick={handleDownloadInvoice}
+            className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white font-medium py-3 rounded-lg hover:bg-blue-700 transition"
+          >
+            <Download className="w-4 h-4" />
+            Download Invoice
+          </button>
+          <Link href={`/tracking`} className="block w-full bg-white text-gray-700 border border-gray-300 font-medium py-3 rounded-lg hover:bg-gray-50 transition">
+            Track Order
           </Link>
           <Link href="/products" className="block w-full bg-white text-gray-700 border border-gray-300 font-medium py-3 rounded-lg hover:bg-gray-50 transition">
             Continue Shopping

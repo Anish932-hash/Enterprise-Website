@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
+import { jsPDF } from "jspdf";
 import { 
   CheckCircle2, 
   Package, 
@@ -11,7 +12,8 @@ import {
   Search,
   MapPin,
   Clock,
-  ArrowRight
+  ArrowRight,
+  Download
 } from "lucide-react";
 import Link from "next/link";
 
@@ -41,6 +43,30 @@ export default function OrderTrackingPage() {
       // Random step for demo purposes if specific tracking ID is entered, otherwise step 2
       setCurrentStep(trackingId === "DELIVERED" ? 4 : 2);
     }, 1200);
+  };
+
+  const handleDownloadInvoice = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(22);
+    doc.text("Invoice", 20, 20);
+    doc.setFontSize(12);
+    doc.text(`Order ID: ${trackingId || "PC-84729103"}`, 20, 30);
+    doc.text(`Date: Aug 12, 2024`, 20, 40);
+    doc.text(`Customer: John Doe`, 20, 50);
+    
+    doc.text("Item", 20, 70);
+    doc.text("Amount", 150, 70);
+    doc.line(20, 72, 190, 72);
+    
+    doc.text("PureClean 5L Multi-Surface", 20, 80);
+    doc.text("Rs. 1,250", 150, 80);
+    
+    doc.line(20, 90, 190, 90);
+    doc.setFontSize(14);
+    doc.text("Total:", 120, 100);
+    doc.text("Rs. 1,250", 150, 100);
+
+    doc.save(`Invoice_${trackingId || "PC-84729103"}.pdf`);
   };
 
   return (
@@ -126,6 +152,14 @@ export default function OrderTrackingPage() {
                     </div>
                   </div>
                 </div>
+
+                <button 
+                  onClick={handleDownloadInvoice}
+                  className="mt-6 w-full flex items-center justify-center gap-2 bg-slate-100 text-slate-700 py-3 rounded-xl font-semibold hover:bg-slate-200 transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  Download Invoice
+                </button>
               </div>
 
               <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
