@@ -29,7 +29,13 @@ import {
   Settings,
   LogOut,
   Package,
-  Plus
+  Plus,
+  Truck,
+  Home,
+  CheckCircle2,
+  Clock,
+  MapPin,
+  ChevronRight
 } from "lucide-react";
 import Link from "next/link";
 
@@ -56,6 +62,21 @@ const feedbacks = [
   { id: 2, user: "Michael T.", rating: 4, product: "Hand Sanitizer Gel 500ml", text: "Good consistency, doesn't dry hands out too much.", sentiment: "positive", date: "5 hours ago" },
   { id: 3, user: "Elena R.", rating: 2, product: "Floor Cleaner 1L", text: "Scent is a bit too strong for my preference.", sentiment: "negative", date: "1 day ago" },
   { id: 4, user: "David C.", rating: 5, product: "Medical Grade Disinfectant Wipes", text: "Very durable wipes, great value for money.", sentiment: "positive", date: "2 days ago" },
+];
+
+const trackingSteps = [
+  { id: 0, title: "Order Placed", icon: ShoppingBag },
+  { id: 1, title: "Processing", icon: Package },
+  { id: 2, title: "Shipped", icon: Truck },
+  { id: 3, title: "Out for Delivery", icon: Home },
+  { id: 4, title: "Delivered", icon: CheckCircle2 },
+];
+
+const recentOrders = [
+  { id: "PC-84729103", customer: "John Doe", date: "Aug 12, 2024", total: "₹1,250", status: 2, items: 3, address: "Bangalore, KA" },
+  { id: "PC-84729104", customer: "Sarah Smith", date: "Aug 13, 2024", total: "₹3,400", status: 1, items: 12, address: "Mumbai, MH" },
+  { id: "PC-84729105", customer: "Michael T.", date: "Aug 14, 2024", total: "₹850", status: 4, items: 2, address: "Delhi, DL" },
+  { id: "PC-84729106", customer: "Clinic Care", date: "Aug 14, 2024", total: "₹12,500", status: 0, items: 45, address: "Pune, MH" },
 ];
 
 export default function AdminDashboard() {
@@ -327,11 +348,108 @@ export default function AdminDashboard() {
               )}
 
               {activeTab === "orders" && (
-                <motion.div key="orders" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col items-center justify-center min-h-[400px]">
-                  <ShoppingBag className="w-12 h-12 text-slate-300 mb-4" />
-                  <h2 className="text-xl font-bold text-slate-800 mb-2">Orders Management</h2>
-                  <p className="text-slate-500 max-w-sm text-center">View and manage all customer orders, process refunds, and update shipping statuses.</p>
-                  <button className="mt-6 px-6 py-2 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-700 transition-colors">Export Orders</button>
+                <motion.div key="orders" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                      <h2 className="text-xl font-bold text-slate-800">Orders Management</h2>
+                      <p className="text-sm text-slate-500 mt-1">View and manage customer orders and tracking status.</p>
+                    </div>
+                    <button className="px-6 py-2 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-700 transition-colors">Export Orders</button>
+                  </div>
+                  
+                  <div className="flex flex-col gap-4">
+                    {recentOrders.map((order) => (
+                      <div key={order.id} className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col gap-6 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex flex-wrap gap-4 items-center justify-between border-b border-slate-100 pb-4">
+                          <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100">
+                              <ShoppingBag className="w-6 h-6 text-slate-400" />
+                            </div>
+                            <div>
+                              <h3 className="font-bold text-slate-800 text-lg">{order.id}</h3>
+                              <p className="text-sm text-slate-500">Placed on {order.date} • {order.customer}</p>
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-end gap-1">
+                            <span className="font-bold text-slate-800 text-lg">{order.total}</span>
+                            <span className="text-sm text-slate-500">{order.items} Items • {order.address}</span>
+                          </div>
+                        </div>
+
+                        {/* Tracking Timeline */}
+                        <div className="relative pt-2 pb-6 px-4 sm:px-8 overflow-x-auto min-w-full hidden md:block">
+                          <div className="absolute left-8 right-8 top-6 h-1 bg-slate-100 rounded-full"></div>
+                          <div 
+                            className="absolute left-8 top-6 h-1 bg-teal-500 rounded-full transition-all duration-500"
+                            style={{ width: `calc(${(order.status / (trackingSteps.length - 1)) * 100}% - ${order.status === trackingSteps.length - 1 ? 0 : 32}px)` }}
+                          ></div>
+                          
+                          <div className="flex justify-between relative z-10 min-w-[500px]">
+                            {trackingSteps.map((step, index) => {
+                              const isCompleted = order.status >= index;
+                              const isCurrent = order.status === index;
+                              const Icon = step.icon;
+                              
+                              return (
+                                <div key={step.id} className="flex flex-col items-center gap-2 -mt-4 group w-1/5">
+                                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 border-4 transition-colors duration-300 ${
+                                    isCompleted 
+                                      ? 'bg-teal-500 border-teal-100 text-white' 
+                                      : isCurrent 
+                                        ? 'bg-white border-teal-500 text-teal-600 shadow-sm' 
+                                        : 'bg-white border-slate-200 text-slate-400'
+                                  }`}>
+                                    <Icon className="w-5 h-5" />
+                                  </div>
+                                  <span className={`text-sm font-semibold text-center ${isCompleted ? 'text-slate-800' : 'text-slate-400'}`}>
+                                    {step.title}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Mobile Tracking Timeline (Vertical) */}
+                        <div className="md:hidden flex flex-col gap-6 relative pl-6 py-4">
+                          <div className="absolute left-10 top-6 bottom-8 w-0.5 bg-slate-100 rounded-full"></div>
+                          <div 
+                            className="absolute left-10 top-6 w-0.5 bg-teal-500 rounded-full"
+                            style={{ height: `${(order.status / (trackingSteps.length - 1)) * 100}%` }}
+                          ></div>
+                          
+                          {trackingSteps.map((step, index) => {
+                              const isCompleted = order.status >= index;
+                              const isCurrent = order.status === index;
+                              const Icon = step.icon;
+                              
+                              return (
+                                <div key={step.id} className="flex items-center gap-4 relative z-10">
+                                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border-4 transition-colors duration-300 ${
+                                    isCompleted 
+                                      ? 'bg-teal-500 border-teal-100 text-white' 
+                                      : isCurrent 
+                                        ? 'bg-white border-teal-500 text-teal-600 shadow-sm' 
+                                        : 'bg-white border-slate-200 text-slate-400'
+                                  }`}>
+                                    <Icon className="w-4 h-4" />
+                                  </div>
+                                  <span className={`text-sm font-semibold ${isCompleted ? 'text-slate-800' : 'text-slate-400'}`}>
+                                    {step.title}
+                                  </span>
+                                </div>
+                              );
+                          })}
+                        </div>
+                        
+                        <div className="flex justify-end pt-2 border-t border-slate-100">
+                          <button className="flex items-center gap-2 text-sm font-semibold text-teal-600 hover:text-teal-700 transition-colors">
+                            Manage Order <ChevronRight className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </motion.div>
               )}
 
