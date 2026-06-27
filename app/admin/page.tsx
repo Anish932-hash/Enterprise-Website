@@ -188,6 +188,20 @@ export default function AdminDashboard() {
           </div>
         </div>
 
+        {/* Mobile Navigation */}
+        <div className="md:hidden w-full bg-white border-b border-slate-200 overflow-x-auto hide-scrollbar shrink-0">
+          <div className="flex p-2 gap-2 w-max">
+            <button onClick={() => setActiveTab('overview')} className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap ${activeTab === 'overview' ? 'bg-teal-50 text-teal-700' : 'text-slate-600'}`}>Overview</button>
+            <button onClick={() => setActiveTab('orders')} className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap ${activeTab === 'orders' ? 'bg-teal-50 text-teal-700' : 'text-slate-600'}`}>Orders</button>
+            <button onClick={() => setActiveTab('products')} className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap ${activeTab === 'products' ? 'bg-teal-50 text-teal-700' : 'text-slate-600'}`}>Products</button>
+            <button onClick={() => setActiveTab('inventory')} className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap ${activeTab === 'inventory' ? 'bg-teal-50 text-teal-700' : 'text-slate-600'}`}>Inventory</button>
+            <button onClick={() => setActiveTab('customers')} className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap ${activeTab === 'customers' ? 'bg-teal-50 text-teal-700' : 'text-slate-600'}`}>Customers</button>
+            <button onClick={() => setActiveTab('wholesale')} className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap ${activeTab === 'wholesale' ? 'bg-teal-50 text-teal-700' : 'text-slate-600'}`}>B2B</button>
+            <button onClick={() => setActiveTab('coupons')} className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap ${activeTab === 'coupons' ? 'bg-teal-50 text-teal-700' : 'text-slate-600'}`}>Coupons</button>
+            <button onClick={() => setActiveTab('feedback')} className={`px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap ${activeTab === 'feedback' ? 'bg-teal-50 text-teal-700' : 'text-slate-600'}`}>Feedback</button>
+          </div>
+        </div>
+
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-4 md:p-6 w-full">
           <div className="max-w-7xl mx-auto flex flex-col gap-6">
@@ -603,6 +617,145 @@ export default function AdminDashboard() {
                             </td>
                           </tr>
                         ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeTab === "inventory" && (
+                <motion.div key="inventory" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                      <h2 className="text-xl font-bold text-slate-800">Inventory Management</h2>
+                      <p className="text-sm text-slate-500 mt-1">Track stock levels and manage restocks.</p>
+                    </div>
+                    <button className="px-4 py-2 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-700 transition-colors w-full sm:w-auto">
+                      Update Stock
+                    </button>
+                  </div>
+                  <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm overflow-x-auto w-full pb-2">
+                    <table className="w-full text-left min-w-[600px]">
+                      <thead>
+                        <tr className="border-b border-slate-100">
+                          <th className="pb-3 text-xs font-bold text-slate-400 uppercase">Product</th>
+                          <th className="pb-3 text-xs font-bold text-slate-400 uppercase">SKU</th>
+                          <th className="pb-3 text-xs font-bold text-slate-400 uppercase">Current Stock</th>
+                          <th className="pb-3 text-xs font-bold text-slate-400 uppercase">Status</th>
+                          <th className="pb-3 text-xs font-bold text-slate-400 uppercase text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="border-b border-slate-50 hover:bg-slate-50/50">
+                          <td className="py-4 text-sm font-medium text-slate-700">PureClean 5L</td>
+                          <td className="py-4 text-sm text-slate-500">PC-5L-01</td>
+                          <td className="py-4 text-sm font-bold text-slate-800">145</td>
+                          <td className="py-4"><span className="bg-emerald-50 text-emerald-600 px-2 py-1 rounded text-xs font-bold whitespace-nowrap">In Stock</span></td>
+                          <td className="py-4 text-right"><button className="text-teal-600 text-sm font-semibold hover:underline">Edit</button></td>
+                        </tr>
+                        <tr className="border-b border-slate-50 hover:bg-slate-50/50">
+                          <td className="py-4 text-sm font-medium text-slate-700">Medical Wipes</td>
+                          <td className="py-4 text-sm text-slate-500">MW-100-02</td>
+                          <td className="py-4 text-sm font-bold text-slate-800">8</td>
+                          <td className="py-4"><span className="bg-amber-50 text-amber-600 px-2 py-1 rounded text-xs font-bold whitespace-nowrap">Low Stock</span></td>
+                          <td className="py-4 text-right"><button className="text-teal-600 text-sm font-semibold hover:underline">Edit</button></td>
+                        </tr>
+                        <tr className="hover:bg-slate-50/50">
+                          <td className="py-4 text-sm font-medium text-slate-700">Floor Cleaner 1L</td>
+                          <td className="py-4 text-sm text-slate-500">FC-1L-03</td>
+                          <td className="py-4 text-sm font-bold text-slate-800">0</td>
+                          <td className="py-4"><span className="bg-rose-50 text-rose-600 px-2 py-1 rounded text-xs font-bold whitespace-nowrap">Out of Stock</span></td>
+                          <td className="py-4 text-right"><button className="text-teal-600 text-sm font-semibold hover:underline">Edit</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeTab === "wholesale" && (
+                <motion.div key="wholesale" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                      <h2 className="text-xl font-bold text-slate-800">Wholesale (B2B) Customers</h2>
+                      <p className="text-sm text-slate-500 mt-1">Review wholesale applications and manage B2B pricing.</p>
+                    </div>
+                  </div>
+                  <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm overflow-x-auto w-full pb-2">
+                    <table className="w-full text-left min-w-[700px]">
+                      <thead>
+                        <tr className="border-b border-slate-100">
+                          <th className="pb-3 text-xs font-bold text-slate-400 uppercase">Business Name</th>
+                          <th className="pb-3 text-xs font-bold text-slate-400 uppercase">Contact</th>
+                          <th className="pb-3 text-xs font-bold text-slate-400 uppercase">GST Number</th>
+                          <th className="pb-3 text-xs font-bold text-slate-400 uppercase">Status</th>
+                          <th className="pb-3 text-xs font-bold text-slate-400 uppercase text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="border-b border-slate-50 hover:bg-slate-50/50">
+                          <td className="py-4 pr-2 text-sm font-medium text-slate-700">City Hospital</td>
+                          <td className="py-4 pr-2 text-sm text-slate-500">Dr. Sharma</td>
+                          <td className="py-4 pr-2 text-sm text-slate-500">22AAAAA0000A1Z5</td>
+                          <td className="py-4 pr-2"><span className="bg-amber-50 text-amber-600 px-2 py-1 rounded text-xs font-bold whitespace-nowrap">Pending Approval</span></td>
+                          <td className="py-4 text-right flex justify-end gap-2">
+                            <button className="bg-teal-50 text-teal-600 px-3 py-1 rounded text-xs font-bold hover:bg-teal-100">Approve</button>
+                            <button className="bg-rose-50 text-rose-600 px-3 py-1 rounded text-xs font-bold hover:bg-rose-100">Reject</button>
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-slate-50/50">
+                          <td className="py-4 pr-2 text-sm font-medium text-slate-700">Metro Cleaners</td>
+                          <td className="py-4 pr-2 text-sm text-slate-500">Rahul Verma</td>
+                          <td className="py-4 pr-2 text-sm text-slate-500">27BBBBB0000B1Z5</td>
+                          <td className="py-4 pr-2"><span className="bg-emerald-50 text-emerald-600 px-2 py-1 rounded text-xs font-bold whitespace-nowrap">Approved</span></td>
+                          <td className="py-4 text-right"><button className="text-teal-600 text-sm font-semibold hover:underline whitespace-nowrap">Manage Pricing</button></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeTab === "coupons" && (
+                <motion.div key="coupons" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                      <h2 className="text-xl font-bold text-slate-800">Coupons & Offers</h2>
+                      <p className="text-sm text-slate-500 mt-1">Create and manage discount codes.</p>
+                    </div>
+                    <button className="px-4 py-2 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-700 transition-colors flex items-center justify-center gap-2 w-full sm:w-auto">
+                      <Plus className="w-4 h-4" /> Create Coupon
+                    </button>
+                  </div>
+                  <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm overflow-x-auto w-full pb-2">
+                    <table className="w-full text-left min-w-[600px]">
+                      <thead>
+                        <tr className="border-b border-slate-100">
+                          <th className="pb-3 pr-2 text-xs font-bold text-slate-400 uppercase">Code</th>
+                          <th className="pb-3 pr-2 text-xs font-bold text-slate-400 uppercase">Discount</th>
+                          <th className="pb-3 pr-2 text-xs font-bold text-slate-400 uppercase">Usage</th>
+                          <th className="pb-3 pr-2 text-xs font-bold text-slate-400 uppercase">Expiry</th>
+                          <th className="pb-3 pr-2 text-xs font-bold text-slate-400 uppercase">Status</th>
+                          <th className="pb-3 text-xs font-bold text-slate-400 uppercase text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="border-b border-slate-50 hover:bg-slate-50/50">
+                          <td className="py-4 pr-2 text-sm font-bold text-slate-800">FESTIVAL20</td>
+                          <td className="py-4 pr-2 text-sm text-slate-600">20% Off</td>
+                          <td className="py-4 pr-2 text-sm text-slate-500">145 / 500</td>
+                          <td className="py-4 pr-2 text-sm text-slate-500 whitespace-nowrap">Oct 31, 2024</td>
+                          <td className="py-4 pr-2"><span className="bg-emerald-50 text-emerald-600 px-2 py-1 rounded text-xs font-bold whitespace-nowrap">Active</span></td>
+                          <td className="py-4 text-right"><button className="text-slate-400 hover:text-teal-600 p-2"><MoreVertical className="w-4 h-4 inline" /></button></td>
+                        </tr>
+                        <tr className="hover:bg-slate-50/50">
+                          <td className="py-4 pr-2 text-sm font-bold text-slate-800">FIRSTORDER</td>
+                          <td className="py-4 pr-2 text-sm text-slate-600">₹100 Off</td>
+                          <td className="py-4 pr-2 text-sm text-slate-500">892 / ∞</td>
+                          <td className="py-4 pr-2 text-sm text-slate-500 whitespace-nowrap">Never</td>
+                          <td className="py-4 pr-2"><span className="bg-emerald-50 text-emerald-600 px-2 py-1 rounded text-xs font-bold whitespace-nowrap">Active</span></td>
+                          <td className="py-4 text-right"><button className="text-slate-400 hover:text-teal-600 p-2"><MoreVertical className="w-4 h-4 inline" /></button></td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
