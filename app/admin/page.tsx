@@ -73,7 +73,7 @@ const trackingSteps = [
   { id: 4, title: "Delivered", icon: CheckCircle2 },
 ];
 
-const recentOrders = [
+const initialOrders = [
   { id: "PC-84729103", customer: "John Doe", date: "Aug 12, 2024", total: "₹1,250", status: 2, items: 3, address: "Bangalore, KA" },
   { id: "PC-84729104", customer: "Sarah Smith", date: "Aug 13, 2024", total: "₹3,400", status: 1, items: 12, address: "Mumbai, MH" },
   { id: "PC-84729105", customer: "Michael T.", date: "Aug 14, 2024", total: "₹850", status: 4, items: 2, address: "Delhi, DL" },
@@ -82,6 +82,35 @@ const recentOrders = [
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [orders, setOrders] = useState(initialOrders);
+  const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+  const [bulkAction, setBulkAction] = useState("");
+
+  const handleSelectOrder = (id: string) => {
+    if (selectedOrders.includes(id)) {
+      setSelectedOrders(selectedOrders.filter(orderId => orderId !== id));
+    } else {
+      setSelectedOrders([...selectedOrders, id]);
+    }
+  };
+
+  const handleSelectAll = () => {
+    if (selectedOrders.length === orders.length) {
+      setSelectedOrders([]);
+    } else {
+      setSelectedOrders(orders.map(o => o.id));
+    }
+  };
+
+  const handleBulkStatusUpdate = () => {
+    if (bulkAction === "") return;
+    const newStatus = parseInt(bulkAction);
+    setOrders(orders.map(order => 
+      selectedOrders.includes(order.id) ? { ...order, status: newStatus } : order
+    ));
+    setSelectedOrders([]);
+    setBulkAction("");
+  };
 
   const NavItem = ({ icon: Icon, label, id, badge }: any) => (
     <button 
@@ -358,12 +387,55 @@ export default function AdminDashboard() {
                     <button className="px-6 py-2 bg-teal-600 text-white font-semibold rounded-xl hover:bg-teal-700 transition-colors">Export Orders</button>
                   </div>
                   
+                  {/* Bulk Actions */}
+                  <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <input 
+                        type="checkbox" 
+                        id="selectAll"
+                        checked={selectedOrders.length === orders.length && orders.length > 0}
+                        onChange={handleSelectAll}
+                        className="w-5 h-5 text-teal-600 rounded border-slate-300 focus:ring-teal-500 cursor-pointer"
+                      />
+                      <label htmlFor="selectAll" className="font-semibold text-slate-700 cursor-pointer">
+                        Select All ({selectedOrders.length} selected)
+                      </label>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 w-full sm:w-auto">
+                      <select
+                        value={bulkAction}
+                        onChange={(e) => setBulkAction(e.target.value)}
+                        disabled={selectedOrders.length === 0}
+                        className="flex-1 sm:flex-none bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                      >
+                        <option value="">Change Status...</option>
+                        {trackingSteps.map((step, idx) => (
+                          <option key={idx} value={idx}>{step.title}</option>
+                        ))}
+                      </select>
+                      <button
+                        onClick={handleBulkStatusUpdate}
+                        disabled={selectedOrders.length === 0 || bulkAction === ""}
+                        className="px-4 py-2 bg-slate-800 text-white text-sm font-semibold rounded-lg hover:bg-slate-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+
                   <div className="flex flex-col gap-4">
-                    {recentOrders.map((order) => (
+                    {orders.map((order) => (
                       <div key={order.id} className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col gap-6 shadow-sm hover:shadow-md transition-shadow">
                         <div className="flex flex-wrap gap-4 items-center justify-between border-b border-slate-100 pb-4">
                           <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100">
+                            <input 
+                              type="checkbox"
+                              checked={selectedOrders.includes(order.id)}
+                              onChange={() => handleSelectOrder(order.id)}
+                              className="w-5 h-5 text-teal-600 rounded border-slate-300 focus:ring-teal-500 cursor-pointer shrink-0"
+                            />
+                            <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100 shrink-0">
                               <ShoppingBag className="w-6 h-6 text-slate-400" />
                             </div>
                             <div>

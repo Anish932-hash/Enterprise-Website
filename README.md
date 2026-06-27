@@ -1,33 +1,20 @@
-# Cleaning Products E-Commerce
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+</div>
 
-A modern, production-ready e-commerce platform built with Next.js 15, Prisma, PostgreSQL, and Tailwind CSS.
+# Run and deploy your AI Studio app
 
-## Features
+This contains everything you need to run your app locally.
 
-- **Full-Stack Next.js 15 App Router**: Modern server components and actions.
-- **PostgreSQL Database**: Configured via Prisma ORM.
-- **Authentication**: Secure credential and Google OAuth sign-in via NextAuth.
-- **Shopping Cart**: Client-side persisted shopping cart using Zustand.
-- **Checkout Flow**: Fully functional simulated checkout storing data securely.
-- **Admin Dashboard**: Comprehensive dashboard for viewing sales, products, and orders.
-- **Responsive UI**: Polished, mobile-first design using Tailwind CSS.
+View your app in AI Studio: https://ai.studio/apps/01248080-a333-4a60-81f4-7565204395b8
 
-## Getting Started
+## Run Locally
 
-1. Set up your `.env` file based on `.env.example`.
-2. Ensure you have a running PostgreSQL instance. Update `DATABASE_URL`.
-3. Run migrations:
-   ```bash
-   npx prisma db push
-   ```
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-5. To populate the store with demo data, visit: `http://localhost:3000/api/seed`.
+**Prerequisites:**  Node.js
 
-## Deployment
 
-This application is ready to be deployed on Vercel or any standard Node.js hosting.
-Ensure environment variables are configured in the platform dashboard.
-Run `npx prisma generate` and `npx prisma migrate deploy` during the build step.
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
