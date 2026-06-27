@@ -11,8 +11,7 @@ import {
   Search,
   MapPin,
   Clock,
-  ArrowRight,
-  Download
+  ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 
@@ -125,16 +124,6 @@ export default function OrderTrackingPage() {
                       <Truck className="w-4 h-4 text-slate-500" />
                       <span className="text-slate-700 font-medium">Express Logistics</span>
                     </div>
-                  </div>
-                  
-                  <div className="pt-4 border-t border-slate-100">
-                    <button 
-                      onClick={() => alert("Invoice downloaded successfully.")}
-                      className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-colors"
-                    >
-                      <Download className="w-4 h-4" />
-                      Download Invoice
-                    </button>
                   </div>
                 </div>
               </div>

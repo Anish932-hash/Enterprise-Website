@@ -1,0 +1,6 @@
+{
+  "name": "Cleaning Products E-Commerce",
+  "description": "A production-ready e-commerce platform for cleaning products.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
